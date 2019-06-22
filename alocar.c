@@ -1,4 +1,11 @@
-//funçãoes para alocação e desalocação dinamica de memoria
+/*
+Nome do Arquivo: alocar.c
+Programador: Daniel Gonçalves
+Data de criação: 2019
+Última modificação: 2019
+
+Descrição: arquivo responsável pela implementação das funções de alocação dinâmica das matrizes usadas no programa.
+*/
 
 #include<stdio.h>
 #include<stdlib.h>

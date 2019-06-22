@@ -1,4 +1,11 @@
-//funções para entrada e saída
+/*
+Nome do Arquivo: imprimir.c
+Programador: Daniel Gonçalves
+Data de criação: 2019
+Última modificação: 2019
+
+Descrição: arquivo onde estão implementadas as funções de saída e entrada de dados
+*/
 
 #include<stdio.h>
 #include<stdlib.h>

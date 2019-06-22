@@ -1,24 +1,33 @@
+/*
+Nome do Arquivo: prototipos.h
+Programador: Daniel Gonçalves
+Data de Criação: 2019
+Última Modificação: 2019
+
+Descrição: Arquivo de cabeçaho reponsável pela definição de constantes, variáveis, estruturas e funções globais. Todas com escopo de programa.
+*/
+
 #ifndef PROTOTIPOS_H
 #define PROTOTIPOS_H
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Constantes - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
-#define QTD_TESTES 92
-#define PEDESTRES 30
-#define QTD_PORTAS 2
-#define PAREDE 500
-#define VALOR_PORTA 1
+#define QTD_TESTES 92				//define a qtd de testes que serão realizados
+#define PEDESTRES 30				//define a qtd de pedestres que serão distribuídos
+#define QTD_PORTAS 2				//define a qtd de portas e consequentemente de camadas
+#define PAREDE 500				//define os valores para as paredes
+#define VALOR_PORTA 1				//define o valor a ser atribuído para a célula de uma porta
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Variáveis e Vetores Globais - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 int lin, col;	//qtd de linhas, qtd de colunas
 int local_port[QTD_PORTAS*2];	//cria-se um vetor que armazena a linha e a coluna, respectivamente, para cada porta
 int semente;	//variavel para armazenar o valor que sera usado pela rand(), para gerar numeros pseudo aleatorios
-int panico;	//vatiavel par auxiliar na geração de numeros aleatorios na função de panico
+//int panico;	//vatiavel par auxiliar na geração de numeros aleatorios na função de panico
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Estruturas de Dados - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
-typedef struct{		//estrutura de dados padrão para os pedestres
+typedef struct{				//estrutura de dados padrão para os pedestres
 	int num, na_sala, mover;	//numero do pedestre (0 até PEDESTRES-1), se ele está na sala, se ele pode se mover
 	int linha_atual, coluna_atual;	//posição atual do pedestre em linha e coluna, respectivamente
 	int linha_mover, coluna_mover;	//posição ao qual o pedestre irá se mover, em linha e coluna, respectivamente

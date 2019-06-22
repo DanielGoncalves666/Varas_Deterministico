@@ -1,4 +1,12 @@
-//funções de alocação de pedestres e movimentação
+/*
+Nome do Arquivo: movimentar.c
+Programador: Daniel Gonçalves
+Data de criação: 2019
+Última modificação: 2019
+
+Descrição: arquivo onde estão implementadas as funções de alocação e dos mecanismos de movimentação dos pedestres 
+
+*/
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -6,10 +14,10 @@
 
 static void verifica_erro(int a, int b, int ped);//função que verifica se algum pedestre está em uma posição inválida
 static int valid_cell(int a, int b);//função responsavel por contar a qtd de celulas validas para movimentação
-static void storage_cell(float vet[][3], int a, int b);//função responsavel por armazenar os valores, as linhas e colunas da vizinhança no vetor
-static void organiza_vetor(float vet[][3],int tamanho);//função que organizar em ordem crescente um vetor com tamanho 'tamanho'
+static void storage_cell(float **vet, int a, int b);//função responsavel por armazenar os valores, as linhas e colunas da vizinhança no vetor
+static void organiza_vetor(float **vet,int tamanho);//função que organizar em ordem crescente um vetor com tamanho 'tamanho'
 static void troca(float *i, float *h);//função responsavel por trocar os valores entre duas variaveis ou posições de um vetor
-static int comparation(float vet[][3], int tamanho);//função para determinar a menor celula da vizinhança de um pedestre
+static int comparation(float **vet, int tamanho);//função para determinar a menor celula da vizinhança de um pedestre
 static int function_panic(Pessoas *P);//função para panico entre os pedestres
 static void X_decide(Pessoas *p, Pessoas *p1);//função responsável por decidir qual pedestre irá se mover
 static node *aloca(Pessoas *pes);//função para se alocar elementos da lista de conflitos	
@@ -40,45 +48,84 @@ void pedestre_alocar(){//função para alocar os pedestres na sala
 }
 
 void basic_moviment(){//função para realizar o movimento basico dos pedestres
-	
+
 	for(int ped=0; ped<PEDESTRES;){//laço para percorrer o vetor de pedestres
 		if(Pedestre[ped].na_sala == 0){//caso na_sala for 0, significa q o pedestre ja saiu do local
 			ped++;//aumentamos a variavel ped
 			continue;//e pulamos o pedestre
 		}
 		Pedestre[ped].mover = 1;//reinicia a variavel que indica que o pedestre, a principio, possui permissao para se mover
-		
+
 		int pnc = function_panic(&Pedestre[ped]);//função para determinar panico nos pedestres, 5% de chance de ocorrer
 		if(pnc == 1){//caso pnc for igual a 1, significa que o pedestre entrou em panico
 			//printf("Pedestres %d entrou em pânico\n\n",ped+2);
 			ped++;//incrementamos a variavel ped
 			continue;//e passamos pra frente
 		}
-		
+
 		int a = Pedestre[ped].linha_atual;//a recebe a linha atual do pedestre
 		int b = Pedestre[ped].coluna_atual;//b recebe a coluna atual do pedestre
-		
+
 		printf("Ped %d\tl_local %d\tc_local %d\t",ped,a,b);
 		verifica_erro(a,b,ped);//função que verifica se algum pedestre está em uma posição inválida
-		
+
 		int valid = valid_cell(a,b);//valid armazena a qtd de celulas validas, que sera o tamanho de um vetor
-		float celulas[valid][3];//vetor onde serao armazenados os valores de todas as celulas validas, suas linhas e colunas
-		
+		printf("\nvalid = %d\n",valid);
+		float **celulas = NULL;//ponteiro para ponteiro pra matriz que armazenará os valores e a posição da célula
+
+		printf("celulas endereço \tantes: ");	
+
+		if(celulas == NULL)
+			printf("NULL");
+		celulas = malloc(valid*sizeof(float *));//alocamos um bloco de memória de tamanho valid para o ponteiro de ponteiro
+		printf("\tdepois: %p\t endereço pont: %p\n", (void *) celulas, (void *) &celulas);
+
+
+		for(int i=0;i<valid;i++)
+			celulas[i] = NULL;
+
+		for(int i=0;i<valid;i++){
+			if(celulas[i] == NULL)
+				printf("conteudo NULL\t");
+		}
+		putchar('\n');
+
+
+
+
+		for(int i=0;i<valid;i++)
+			celulas[i] = malloc(3*sizeof(float));//para cada posição do bloco alocamos um novo bloco de 3 posições
+
+
+		for(int i=0;i<valid;i++)
+			printf("%p\t",(void *) celulas[i]);
+		putchar('\n');
+
+		for(int i=0;i<valid;i++)
+			printf("%p\t",(void *) &celulas[i]);
+		putchar('\n');
+
+
+
+
 		storage_cell(celulas,a,b);//função responsavel por fazer esse armazenamento
 		organiza_vetor(celulas,valid);//organizar os valores da vizinhamça em ordem crescente
-		
+
+		int chosen = comparation(celulas,valid);//retorna a celula para a qual o pedestre irá se mover
+
 		for(int i=0;i<valid;i++){
 			printf("%.1f %.1f %.1f\n",celulas[i][0],celulas[i][1],celulas[i][2]);
 		}
 		putchar('\n');
-		
-		int chosen = comparation(celulas,valid);//retorna a celula para a qual o pedestre irá se mover
-		
+
 		Pedestre[ped].linha_mover = (int) celulas[chosen][1];//a variavel que indica a linha para onde o pedestre irá se mover recebe o valor amazenado na segunda coluna da matriz celulas
 		Pedestre[ped].coluna_mover = (int) celulas[chosen][2];//a variavel que indica a coluna para onde o pedestre irá se mover recebe o valor armazenado na terceira coluna da matriz celulas
 
 		printf("\tl_mover %d\tc_mover %d\n\n",Pedestre[ped].linha_mover,Pedestre[ped].coluna_mover);
-		
+
+		for(int i=0; i<valid; i++)//desaloca a memória de cada linha
+			free(celulas[i]);
+		free(celulas);//desaloca a memoria do vetor de linhas
 		ped++;
 	}
 }
@@ -111,7 +158,7 @@ int valid_cell(int a, int b){//função responsavel por contar a qtd de celulas 
 	return valid;
 }
 
-void storage_cell(float vet[][3], int a, int b){//função responsavel por armazenar os valores, as linhas e colunas da vizinhança no vetor
+void storage_cell(float **vet, int a, int b){//função responsavel por armazenar os valores, as linhas e colunas da vizinhança no vetor
 	int i = 0;//a variavel i é responsavel por percorrer a matriz de armazenamento, linha por linha
 
 	for(int c=-1; c<2; c++){
@@ -128,7 +175,7 @@ void storage_cell(float vet[][3], int a, int b){//função responsavel por armaz
 	}
 }
 
-void organiza_vetor(float vet[][3],int tamanho){//função que organizar em ordem crescente um vetor com tamanho 'tamanho'
+void organiza_vetor(float **vet,int tamanho){//função que organizar em ordem crescente um vetor com tamanho 'tamanho'
 
 	//para organizar esse vetor em ordem crescente, verificações serão feitas se comparando determinada posição com sua posterior, devido a esse fato, a ultima não sofrera o processo, pois caso contrario uma falha de segmentação acontecerá
 	int fim;
@@ -152,7 +199,7 @@ void troca(float *i, float *h){//função responsavel por trocar os valores entr
 	*h = aux;//*h recebe o valor de *i
 }
 
-int comparation(float vet[][3], int tamanho){//função para determinar a menor celula da vizinhança de um pedestre
+int comparation(float **vet, int tamanho){//função para determinar a menor celula da vizinhança de um pedestre
 
 	int ultimo = 0;//indica a ultima posição que teve valor semelhante a celula no indice 0, que a principio é ela propria
 	int n=1;//indica a posição pela qual a comparação ira começar
@@ -174,10 +221,10 @@ int function_panic(Pessoas *P){//função para panico entre os pedestres
 	//printf("%d\n",sem);
 	if(sem < 5){//caso o numero gerado for menos que 5, ou seja, se estiver na margem de 5% prevista no modelo, o pedestre entra em panico
 		P->mover = 0;//como o pedestre entrou em panico, logo ele n pode se mover
-		panico++;//incrementa-se a variavel para permitir a geração de numeros diferentes
+		//panico++;//incrementa-se a variavel para permitir a geração de numeros diferentes
 		return 1;//retorna o valor 1, significando que o pedestre entrou em panico
 	}else{
-		panico++;//incrementa-se a variavel para permitir a geração de numeros diferentes
+		//panico++;//incrementa-se a variavel para permitir a geração de numeros diferentes
 		return 0;//retorna 0, significando que o pedestre não entrou em panico
 	}
 	//um erro que foi cometido durante o desenvolvimento dessa função foi colocar panico++ no fim da função, esperando que o restante dela seria executado. Porém, deve-se atentar ao fato que quando é executado um return, o comando do programa é devolvido para a main
@@ -307,7 +354,7 @@ void mover_msmlugar(){//função para impedir que pedestres se movimentem para a
 		
 		if(qtd>=2){//se tiver mais de um pedestre na fila, assim existe um conflito
 			int sem = rand()%qtd;//resto de um numero aleatorio pela qtd de pedestres
-			panico+= ped;//incrementa a variavel panico
+			//panico+= ped;//incrementa a variavel panico
 			node *tmp = lista->prox;//da ao ponteiro tmp o endereço da 'cabeça' da lista
 
 			for(int y=0; y<qtd; y++){
