@@ -47,8 +47,7 @@ int main(){
 			}while(cont() > 0);//rodará enquanto a qtd de pedestres for maior que 0
 			
 			semente++;//incrementa a variavel usado para gerar os numeros pseudo-aleatorios
-			//printf("%d\n",passos);//imprime a quantidade de passos necessários para todos os pedestres saírem da sala
-			printf("foda SEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE\n");
+			printf("%d\n",passos);//imprime a quantidade de passos necessários para todos os pedestres saírem da sala
 		}
 		desaloca();//desaloca as matrizes
 	}

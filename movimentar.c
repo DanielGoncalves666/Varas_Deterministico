@@ -66,62 +66,26 @@ void basic_moviment(){//função para realizar o movimento basico dos pedestres
 		int a = Pedestre[ped].linha_atual;//a recebe a linha atual do pedestre
 		int b = Pedestre[ped].coluna_atual;//b recebe a coluna atual do pedestre
 
-		printf("Ped %d\tl_local %d\tc_local %d\t",ped,a,b);
 		verifica_erro(a,b,ped);//função que verifica se algum pedestre está em uma posição inválida
 
 		int valid = valid_cell(a,b);//valid armazena a qtd de celulas validas, que sera o tamanho de um vetor
-		printf("\nvalid = %d\n",valid);
-		float **celulas = NULL;//ponteiro para ponteiro pra matriz que armazenará os valores e a posição da célula
-
-		printf("celulas endereço \tantes: ");	
-
-		if(celulas == NULL)
-			printf("NULL");
-		celulas = malloc(valid*sizeof(float *));//alocamos um bloco de memória de tamanho valid para o ponteiro de ponteiro
-		printf("\tdepois: %p\t endereço pont: %p\n", (void *) celulas, (void *) &celulas);
-
-
-		for(int i=0;i<valid;i++)
-			celulas[i] = NULL;
-
-		for(int i=0;i<valid;i++){
-			if(celulas[i] == NULL)
-				printf("conteudo NULL\t");
+		if(valid == 0){//caso o pedestre estiver encurralado e não puder se mover para local algum
+			Pedestre[ped].mover = 0;//determinamos que ele é incapaz de se mover
+			continue;//e passamos para o próximo pedestre
 		}
-		putchar('\n');
-
-
-
-
+		
+		float **celulas = NULL;//ponteiro para ponteiro pra matriz que armazenará os valores e a posição da célula
+		celulas = malloc(valid*sizeof(float *));//alocamos um bloco de memória de tamanho valid para o ponteiro de ponteiro
 		for(int i=0;i<valid;i++)
 			celulas[i] = malloc(3*sizeof(float));//para cada posição do bloco alocamos um novo bloco de 3 posições
-
-
-		for(int i=0;i<valid;i++)
-			printf("%p\t",(void *) celulas[i]);
-		putchar('\n');
-
-		for(int i=0;i<valid;i++)
-			printf("%p\t",(void *) &celulas[i]);
-		putchar('\n');
-
-
-
 
 		storage_cell(celulas,a,b);//função responsavel por fazer esse armazenamento
 		organiza_vetor(celulas,valid);//organizar os valores da vizinhamça em ordem crescente
 
 		int chosen = comparation(celulas,valid);//retorna a celula para a qual o pedestre irá se mover
 
-		for(int i=0;i<valid;i++){
-			printf("%.1f %.1f %.1f\n",celulas[i][0],celulas[i][1],celulas[i][2]);
-		}
-		putchar('\n');
-
 		Pedestre[ped].linha_mover = (int) celulas[chosen][1];//a variavel que indica a linha para onde o pedestre irá se mover recebe o valor amazenado na segunda coluna da matriz celulas
 		Pedestre[ped].coluna_mover = (int) celulas[chosen][2];//a variavel que indica a coluna para onde o pedestre irá se mover recebe o valor armazenado na terceira coluna da matriz celulas
-
-		printf("\tl_mover %d\tc_mover %d\n\n",Pedestre[ped].linha_mover,Pedestre[ped].coluna_mover);
 
 		for(int i=0; i<valid; i++)//desaloca a memória de cada linha
 			free(celulas[i]);
@@ -146,7 +110,7 @@ void verifica_erro(int a, int b, int ped){//função que verifica se algum pedes
 
 int valid_cell(int a, int b){//função responsavel por contar a qtd de celulas validas para movimentação
 	int valid = 0;
-	
+
 	for(int c=-1; c<2; c++){
 		for(int d=-1; d<2; d++){//juntos percorrem a vizinhança do pedestre	
 			if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE)
@@ -441,7 +405,6 @@ void ped_sala_loc(){//função para alocar novamente os pedestres na sala format
 		if(Pedestre[ped].na_sala == 0)
 			continue;//se caso o pedestre já tenha saido da sala, ignora
 		//printf("%d Pedestre[ped].linha_atual = %d Pedestre[ped].coluna_atual = %d\n",ped,Pedestre[ped].linha_atual,Pedestre[ped].coluna_atual);
-		printf("ped = %d\n",ped);
 		sala.mat[Pedestre[ped].linha_atual][Pedestre[ped].coluna_atual] = Pedestre[ped].num + 2;
 		//atribui para a determinada posição da sala o numero real do pedestre + 2
 	}
