@@ -2,7 +2,6 @@
 Nome do Arquivo: imprimir.c
 Programador: Daniel Gonçalves
 Data de criação: 2019
-Última modificação: 2019
 
 Descrição: arquivo onde estão implementadas as funções de saída e entrada de dados
 */
@@ -44,6 +43,8 @@ void imprimir_sala_pedestres(mat_int *M, mat_float *N){//função para imprimir 
 		for(int b=0; b<col; b++){
 			if((*N).mat[a][b] == 1.0)
 				printf(" \t");//caso a célula for uma porta, imprime um espaço
+			else if(fogo.mat[a][b] == VALOR_FOGO)												//fogo
+				printf("%d\t",VALOR_FOGO);//caso a célula estiver pegando fogo, imprime o valor de fogo					//fogo
 			else if(a == 0 || a == lin-1 || b == 0 || b == col-1)
 				printf("%d\t",PAREDE);//caso for uma das células da borda, imprime o valor de PAREDE
 			else if((*M).mat[a][b] == 0)
@@ -54,3 +55,6 @@ void imprimir_sala_pedestres(mat_int *M, mat_float *N){//função para imprimir 
 		printf("\n\n\n");
 	}
 }
+
+
+

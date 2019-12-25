@@ -2,7 +2,6 @@
 Nome do Arquivo: main.c
 Programador: Daniel Gonçalves
 Data de Criação: 2018
-Última Modificação: 22/06/2019
 
 Descrição: Esse módulo é o módulo principal do programa, responsável por chamar todas as funções necessárias para alocação de matrizes,
 distribuição do campo de piso, distrbuição dos pedestres, movimentação e realização de testes em massa.
@@ -30,8 +29,12 @@ int main(){
 			distribuir_piso();//função para distribuir os valores para cada celula do campo de piso, em cada camada
 			piso_final();//une todas as camadas do campo_piso
 //- - - - - - - - - - - - - - - - - - - - - - - - - Movimentação - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - - - - //	
-			inicializar_mat_int(&sala,0,0);//função para inicializar a sala com zeros 
+			inicializar_mat_int(&sala,0,0);//função para inicializar a sala com zeros
+			inicializar_mat_int(&fogo,0,0);//preenche toda a matriz fogo com zeros								//fogo
+			
 			pedestre_alocar();//função para distribuir os pedestres na sala
+			inserir_fogo();////função responsável por inserir os focos de incêndio na sala							//fogo
+			
 			//imprimir_sala(&sala);printf("\n\n");
 			//imprimir_piso(&piso);printf("\n\n");
 			do{
@@ -42,6 +45,7 @@ int main(){
 				converter_posicao();//função para 'realizar a movimentação'
 				inicializar_mat_int(&sala,0,0);//reinicializa a sala
 				ped_sala_loc();//função para alocar novamente os pedestres na sala formatada
+				fogo_espalhar();//função responsável por espalhar o fogo pela sala							//fogo
 				passos++;//incrementa a variável passos ao fim de uma rodada
 				//imprimir_sala_pedestres(&sala,&piso);printf("\n\n");getchar();
 			}while(cont() > 0);//rodará enquanto a qtd de pedestres for maior que 0

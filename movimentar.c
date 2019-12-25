@@ -2,7 +2,6 @@
 Nome do Arquivo: movimentar.c
 Programador: Daniel Gonçalves
 Data de criação: 2019
-Última modificação: 2019
 
 Descrição: arquivo onde estão implementadas as funções de alocação e dos mecanismos de movimentação dos pedestres 
 
@@ -35,7 +34,7 @@ void pedestre_alocar(){//função para alocar os pedestres na sala
 		else if(sala.mat[a][b] >= 2)
 			continue;//caso a posição já estiver ocupada, pula
 		else{
-			sala.mat[a][b] = 2+ped;//na posição escolhida para o pedestre na matriz sala sera colocado o numero do pedestre + 2  
+			sala.mat[a][b] = 2 + ped;//na posição escolhida para o pedestre na matriz sala sera colocado o numero do pedestre + 2  
 			Pedestre[ped].num = ped;//armazena o numero real do pedestre
 			Pedestre[ped].linha_atual = a;//armazena a linha atual do pedestre
 			Pedestre[ped].coluna_atual = b;//armazena a coluna atual do pedestre
@@ -115,6 +114,8 @@ int valid_cell(int a, int b){//função responsavel por contar a qtd de celulas 
 		for(int d=-1; d<2; d++){//juntos percorrem a vizinhança do pedestre	
 			if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE)
 				continue;//caso a posição ja estiver ocupada, ou for uma parede, passamos pra frente
+			else if(fogo.mat[a+c][b+d] == VALOR_FOGO)											//fogo
+				continue;//caso houver um foco de incêndio na célula 									//fogo
 			else
 				valid++; 
 		}
@@ -129,6 +130,8 @@ void storage_cell(float **vet, int a, int b){//função responsavel por armazena
 		for(int d=-1; d<2; d++){//juntos percorrem a vizinhança do pedestre	
 	 		if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE)
 				continue;//caso a posição ja estiver ocupada, ou for uma parede, passamos pra frente
+			else if(fogo.mat[a+c][b+d] == VALOR_FOGO)											//fogo
+				continue;//caso houver um foco de incêndio na célula 									//fogo
 			else{
 				vet[i][0] = piso.mat[a+c][b+d];//armazena o valor da celula
 				vet[i][1] = a+c; //armazena a linha da celula

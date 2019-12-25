@@ -2,7 +2,6 @@
 Nome do Arquivo: piso.c
 Programador: Daniel Gonçalves
 Data de criação: 2019
-Última modificação: 2019
 
 Descrição: arquivo onde estão implementadas as funções de destribuição do campo de piso.
 */

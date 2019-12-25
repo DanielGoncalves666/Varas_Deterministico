@@ -2,7 +2,6 @@
 Nome do Arquivo: prototipos.h
 Programador: Daniel Gonçalves
 Data de Criação: 2019
-Última Modificação: 2019
 
 Descrição: Arquivo de cabeçaho reponsável pela definição de constantes, variáveis, estruturas e funções globais. Todas com escopo de programa.
 */
@@ -14,9 +13,16 @@ Descrição: Arquivo de cabeçaho reponsável pela definição de constantes, va
 
 #define QTD_TESTES 92				//define a qtd de testes que serão realizados
 #define PEDESTRES 30				//define a qtd de pedestres que serão distribuídos
-#define QTD_PORTAS 2				//define a qtd de portas e consequentemente de camadas
+#define QTD_PORTAS 1				//define a qtd de portas e consequentemente de camadas
 #define PAREDE 500				//define os valores para as paredes
 #define VALOR_PORTA 1				//define o valor a ser atribuído para a célula de uma porta
+
+// - - - - - - FOGO - - - - - - //
+#define ZONA_NEUTRA 7.5 			//limite da zona onde nenhum foco de incêndio pode começar						//fogo
+#define ZONA_QUENTE 14.O			//limite da zona ideal para focos de incêndio começarem							//fogo
+#define QTD_FOCOS 1				//define a quantidade de focos de incêndio								//fogo
+#define VALOR_FOGO 400				//define o valor de uma célula pegando fogo								//fogo
+#define PROBABILIDADE 5				//define a probabilidade de uma célula na vizinhança de um foco pegar fogo				//fogo
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Variáveis e Vetores Globais - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
@@ -37,7 +43,7 @@ Pessoas Pedestre[PEDESTRES];	//estrutura para a quantidade PEDESTRES de indivíd
 typedef struct{
 	int **mat;
 }mat_int;
-mat_int sala;			//estrutura para a sala, onde os pedestres serao alocados
+mat_int sala, fogo, fogo_aux;			//estrutura para a sala, onde os pedestres serao alocados
 
 typedef struct{
 	float **mat;
@@ -83,5 +89,8 @@ extern void aloca_float_mat(mat_float *M);//função para alocar uma matriz de r
 extern void alocar_tudo();//função para alocar todas as matrizes
 extern void desaloca();//função para desalocar as matrizes básicas
 
+//fogo.c
+extern void inserir_fogo();//função responsável por inserir os focos de incêndio na sala
+extern void fogo_espalhar();//função responsável por espalhar o fogo pela sala
 
 #endif
