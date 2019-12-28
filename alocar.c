@@ -29,6 +29,7 @@ void alocar_tudo(){//função para alocar todas as matrizes
 	aloca_int_mat(&fogo);//aloca a matriz fogo													//fogo
 	aloca_int_mat(&fogo_aux);//aloca a matriz fogo_aux												//fogo
 	aloca_float_mat(&piso);//aloca a matriz piso
+	aloca_float_mat(&piso_original);//aloca a matriz que armazena o piso original									//fogo
 	for(int b=0; b<QTD_PORTAS; b++){
 		aloca_float_mat(&campo_piso[b]);//aloca uma matriz para cada posição de campo_piso
 	}

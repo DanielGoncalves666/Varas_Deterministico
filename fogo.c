@@ -16,7 +16,7 @@ void inserir_fogo(){//função responsável por inserir os focos de incêndio na
 		
 		int i = (rand()%(lin-2))+1;//sorteia a linha para colocar o foco
 		int h = (rand()%(col-2))+1;//sorteia a coluna para colocar o foco
-		if(piso.mat[i][h] > ZONA_NEUTRA && fogo.mat[i][h] == 0 && sala.mat[i][h] == 0){//se a célula sorteado estiver fora da zona neutra e ela não tiver um foco de incêndio e nem um pedestre já alocado
+		if(piso.mat[i][h] > ZONA_NEUTRA && piso.mat[i][h] <= ZONA_QUENTE && fogo.mat[i][h] == 0 && sala.mat[i][h] == 0){//se a célula sorteado estiver fora da zona neutra e dentro da zona quente (máxima), ela não tiver um foco de incêndio e nem um pedestre já alocado
 			fogo.mat[i][h] = VALOR_FOGO;//atribui o valor do fogo na matriz
 			a++;//seu aumento indica a introdução com sucesso de um novo foco
 		}
@@ -32,10 +32,10 @@ void fogo_espalhar(){//função responsável por espalhar o fogo pela sala
 				fogo_aux.mat[a][b] = fogo.mat[a][b];//a matriz aux recebe o foco de incendio na posição determinada
 				for(int c=-1; c<2; c++){
 					for(int d=-1; d<2; d++){//percorre a vizinhança
-						if(piso.mat[a+c][b+d] == PAREDE || piso.mat[a+c][b+d] == VALOR_PORTA || sala.mat[a+c][b+d] > 0 || fogo.mat[a+c][b+d] == VALOR_FOGO)
-							continue;//caso a célula da vizinhança for uma parede ou uma porta ou estiver ocupada por um pedestre ou se já existir um foco naquela posição
+						if(piso.mat[a+c][b+d] == PAREDE || piso.mat[a+c][b+d] == VALOR_PORTA || sala.mat[a+c][b+d] > 0 || fogo.mat[a+c][b+d] == VALOR_FOGO || piso.mat[a+c][b+d] <=5.0)
+							continue;//caso a célula da vizinhança for uma parede ou uma porta ou estiver ocupada por um pedestre ou se já existir um foco naquela posição, ouuuuu se caso a célula estiver próxima de uma saída
 						
-						int sem = rand()%100;//a variavel 'sem' recebe um numero aleatorio, entre 0 e 99
+						int sem = rand()%1000;//a variavel 'sem' recebe um numero aleatorio, entre 0 e 99
 						
 						if(sem < PROBABILIDADE)//quase sem for menor que o valor setado para a probabilidade
 							fogo_aux.mat[a+c][b+d] = VALOR_FOGO;//um foco é iniciado

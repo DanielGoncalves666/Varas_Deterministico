@@ -18,18 +18,17 @@ Descrição: Arquivo de cabeçaho reponsável pela definição de constantes, va
 #define VALOR_PORTA 1				//define o valor a ser atribuído para a célula de uma porta
 
 // - - - - - - FOGO - - - - - - //
-#define ZONA_NEUTRA 7.5 			//limite da zona onde nenhum foco de incêndio pode começar						//fogo
-#define ZONA_QUENTE 14.O			//limite da zona ideal para focos de incêndio começarem							//fogo
-#define QTD_FOCOS 1				//define a quantidade de focos de incêndio								//fogo
+#define ZONA_NEUTRA 10	 			//limite da zona onde nenhum foco de incêndio pode começar						//fogo
+#define ZONA_QUENTE 16				//limite da zona ideal para focos de incêndio começarem							//fogo
+#define QTD_FOCOS 4				//define a quantidade de focos de incêndio								//fogo
 #define VALOR_FOGO 400				//define o valor de uma célula pegando fogo								//fogo
-#define PROBABILIDADE 5				//define a probabilidade de uma célula na vizinhança de um foco pegar fogo				//fogo
+#define PROBABILIDADE 25			//define a probabilidade de uma célula na vizinhança de um foco pegar fogo (por mil)			//fogo
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Variáveis e Vetores Globais - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 int lin, col;	//qtd de linhas, qtd de colunas
 int local_port[QTD_PORTAS*2];	//cria-se um vetor que armazena a linha e a coluna, respectivamente, para cada porta
 int semente;	//variavel para armazenar o valor que sera usado pela rand(), para gerar numeros pseudo aleatorios
-//int panico;	//vatiavel par auxiliar na geração de numeros aleatorios na função de panico
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Estruturas de Dados - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
@@ -43,13 +42,13 @@ Pessoas Pedestre[PEDESTRES];	//estrutura para a quantidade PEDESTRES de indivíd
 typedef struct{
 	int **mat;
 }mat_int;
-mat_int sala, fogo, fogo_aux;			//estrutura para a sala, onde os pedestres serao alocados
+mat_int sala, fogo, fogo_aux;			//estrutura para a sala, onde os pedestres serao alocados						//fogo
 
 typedef struct{
 	float **mat;
 }mat_float;
 mat_float campo_piso[QTD_PORTAS];	//estrutura para o campo de piso.
-mat_float piso;				//estrutura para o piso final, obtido a partir das matrizes do campo_piso
+mat_float piso, piso_original;		//estrutura para o piso final, obtido a partir das matrizes do campo_piso					//fogo
 
 typedef struct node{//estrutrura do tipo fila
 	int num;
@@ -70,6 +69,8 @@ extern void inicializar_mat_int(mat_int *M, int valor, int aux);//função para 
 extern void inserir_port();//função para inserir as portas em sua respectiva camada da matriz campo_piso
 extern void distribuir_piso();//função que reune as duas funções de atribuição de valores ao piso
 extern void piso_final();//junta todos os valores em um piso final, sendo que os valores menores tem a prioridade
+extern int contarVizin(mat_float *M, float num, int a, int b);//função que conta a quantidade de células na vizinhança com um determinado valor		//fogo
+extern void copiarPiso(mat_float *M, mat_float *N);//função que copia o campo de piso para outra							//fogo
 
 //movimentar.c
 extern void pedestre_alocar();//função para alocar os pedestres na sala
