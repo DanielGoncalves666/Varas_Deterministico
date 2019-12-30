@@ -19,19 +19,19 @@ int main(){
 		alocar_tudo();	//função para alocar todas as matrizes
 			
 		semente = 0;	//inicializa a variavel usada para gerar os numeros pseudo-aleatorios
-		for(int simu=0; simu<100; simu++){	//simu define a qtd de simulações a serem feitas, que por padrão é 100
+		for(int simu=0; simu<1000; simu++){	//simu define a qtd de simulações a serem feitas, que por padrão é 100
 //- - - - - - - - - - - - - - - - - - - - - - - - - Campo de Piso - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//	
 			int passos = 0;//variável que indica a qtd de passos necessários para todos os pedestres saírem da sala
 			
 			srand(semente);//dá semente como memória para a função rand()
 			inicializar_campo_piso();//função para inicializar a matriz campo_piso
+			inicializar_mat_int(&fogo,0,0);//preenche toda a matriz fogo com zeros								//fogo
 			inserir_port();//função para inserir as portas em sua respectiva camada da matriz campo_piso
 			distribuir_piso();//função para distribuir os valores para cada celula do campo de piso, em cada camada
 			piso_final();//une todas as camadas do campo_piso
 			copiarPiso(&piso,&piso_original);//função que copia o conteudo de uma matriz de floats em outra					//fogo
 //- - - - - - - - - - - - - - - - - - - - - - - - - Movimentação - - - - - - - - - - - - - - - - - - - - - - -- - - - - - - - - - - //	
 			inicializar_mat_int(&sala,0,0);//função para inicializar a sala com zeros
-			inicializar_mat_int(&fogo,0,0);//preenche toda a matriz fogo com zeros								//fogo
 			
 			pedestre_alocar();//função para distribuir os pedestres na sala
 			inserir_fogo();////função responsável por inserir os focos de incêndio na sala							//fogo
@@ -53,10 +53,12 @@ int main(){
 				inserir_port();//função para inserir as portas em sua respectiva camada da matriz campo_piso				//fogo
 				distribuir_piso();//função para distribuir os valores para cada celula do campo de piso, em cada camada			//fogo
 				piso_final();//une todas as camadas do campo_piso									//fogo
-				
+
 				passos++;//incrementa a variável passos ao fim de uma rodada
+
 				//imprimir_sala_pedestres(&sala,&piso);printf("\n\n");getchar();
 				//imprimir_piso(&piso);printf("\n\n");
+				
 			}while(cont() > 0);//rodará enquanto a qtd de pedestres for maior que 0
 			
 			semente++;//incrementa a variavel usado para gerar os numeros pseudo-aleatorios

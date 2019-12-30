@@ -119,7 +119,7 @@ void campo_geral(mat_float *M){//preenche o restante do campo de piso
 				else if((*M).mat[a][b]>1.0 && (*M).mat[a][b]!=PAREDE){
 					float base = (*M).mat[a][b];//atribui o valor da celula encontrada a variavel base
 					for(int c=-1; c<2; c++){
-						for(int d=-1; d<2; d++){//percorre-se a vizinhança da celula em questao
+						for(int d=-1; d<2; d++){//percorre-se a vizinhança da celula em questao						
 							if((*M).mat[a+c][b+d]==PAREDE)
 								continue;//se caso uma celula da vizinhança for parede, ignora
 							if(fogo.mat[a][b] == VALOR_FOGO){								//fogo
@@ -143,14 +143,18 @@ void campo_geral(mat_float *M){//preenche o restante do campo de piso
 				}
 			}
 		}
+		
 
 		int zero=0;//variavel para contar a presença de celulas vazias
 		for(int e=0; e<lin; e++){
 			for(int f=0; f<col; f++){//percorre a matriz
 				if((*M).mat[e][f] == 0.0){
-					if(contarVizin(M,0.0,e,f) == 8)											//fogo
+					if(contarVizin(M,0.0,e,f) == 8 || contarVizin(M,PAREDE,e,f) == 8 || contarVizin(M,0.0,e,f) + contarVizin(M,PAREDE,e,f) == 8 ){															//fogo
+						//caso a célula estiver cercada por uma vizinhança vazia
+						//caso a célula estiver cercada por uma vizinhança vazia e com focos
+						//caso a célula estiver totalmente cercada por focos
 						continue;//caso a célula esteja totalmente cercada							//fogo
-					else
+					}else
 						zero++;//sempre que se encontra uma celula vazia, é incrementada
 				}
 			}	
@@ -189,7 +193,7 @@ void piso_final(){//junta todos os valores em um piso final, sendo que os valore
 	}
 }
 
-int contarVizin(mat_float *M, float num, int a, int b){//função que conta a quantidade de células na vizinhança com um determinado valor
+int contarVizin(mat_float *M, float num, int a, int b){//função que conta a quantidade de células na vizinhança com um determinado valor em uma matriz float
 	int contagem=0;
 	
 	for(int c=-1; c<2; c++){

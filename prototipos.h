@@ -25,7 +25,6 @@ Descrição: Arquivo de cabeçaho reponsável pela definição de constantes, va
 #define PROBABILIDADE 25			//define a probabilidade de uma célula na vizinhança de um foco pegar fogo (por mil)			//fogo
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Variáveis e Vetores Globais - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
 int lin, col;	//qtd de linhas, qtd de colunas
 int local_port[QTD_PORTAS*2];	//cria-se um vetor que armazena a linha e a coluna, respectivamente, para cada porta
 int semente;	//variavel para armazenar o valor que sera usado pela rand(), para gerar numeros pseudo aleatorios

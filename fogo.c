@@ -11,14 +11,35 @@ Descrição: arquivo onde estão implementadas as funções relacionadas à prop
 #include"prototipos.h"
 
 void inserir_fogo(){//função responsável por inserir os focos de incêndio na sala
+	int cont = 0;//variável usada para contar em quantas células a verificação já passou
+	int num = 0;//variavel que recebe o número aleatorio
+	int break_auxiliar;//variável para auxiliar na parada do for que percorre as linhas
 
 	for(int a=0; a<QTD_FOCOS; ){//quantidade de focos
+		if(cont == 0){//o número aleatório é apenas gerado de cont estiver zerado
+			num = rand()%(lin-2)*(col-2);//num recebe um número aleatorio localizado entre 0 e o produto das qtd de linhas e colunas que não sejam paredes
+		}
 		
-		int i = (rand()%(lin-2))+1;//sorteia a linha para colocar o foco
-		int h = (rand()%(col-2))+1;//sorteia a coluna para colocar o foco
-		if(piso.mat[i][h] > ZONA_NEUTRA && piso.mat[i][h] <= ZONA_QUENTE && fogo.mat[i][h] == 0 && sala.mat[i][h] == 0){//se a célula sorteado estiver fora da zona neutra e dentro da zona quente (máxima), ela não tiver um foco de incêndio e nem um pedestre já alocado
-			fogo.mat[i][h] = VALOR_FOGO;//atribui o valor do fogo na matriz
-			a++;//seu aumento indica a introdução com sucesso de um novo foco
+		for(int i=1; i<lin-1; i++){
+			for(int h=1; h<col-1;h++){//percorre a matriz nas posições que não são paredes
+				break_auxiliar = 0;//inicializamos indicando que não se deve parar o laço
+				if(sala.mat[i][h] > 0 || fogo.mat[i][h] > 0){//caso a posição esteja ocupada por um pedestre ou foco de incêndio
+					continue;
+				}
+				if(piso.mat[i][h] > ZONA_NEUTRA && piso.mat[i][h] <= ZONA_QUENTE){//caso a célula esteja na zona determinada onde focos de incêndio podem começar
+					if(cont == num){//caso a váriavel de contagem for igual ao número sorteado
+						fogo.mat[i][h] = VALOR_FOGO;//atribui o valor do fogo na matriz	
+						a++;//seu aumento indica a introdução com sucesso de um novo foco
+						break_auxiliar = 1;//inicializamos indicando que se deve parar o laço
+						cont = 0;//reiniciamos a varável de contagem
+						break;				
+					}else{
+						cont++;//incrementamos a variável
+					}
+				}
+			}
+			if(break_auxiliar == 1)
+				break;
 		}
 	}
 }
@@ -36,7 +57,7 @@ void fogo_espalhar(){//função responsável por espalhar o fogo pela sala
 							continue;//caso a célula da vizinhança for uma parede ou uma porta ou estiver ocupada por um pedestre ou se já existir um foco naquela posição, ouuuuu se caso a célula estiver próxima de uma saída
 						
 						int sem = rand()%1000;//a variavel 'sem' recebe um numero aleatorio, entre 0 e 99
-						
+
 						if(sem < PROBABILIDADE)//quase sem for menor que o valor setado para a probabilidade
 							fogo_aux.mat[a+c][b+d] = VALOR_FOGO;//um foco é iniciado
 					}
