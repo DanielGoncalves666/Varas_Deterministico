@@ -128,8 +128,8 @@ int valid_cell(int a, int b, int qtd_fogo, int qtd_vazio){//função responsavel
 	}else{//caso existir 5 ou menos céulas vazias ou com fogo na vizinhança										//fogo
 		for(int c=-1; c<2; c++){
 			for(int d=-1; d<2; d++){//juntos percorrem a vizinhança do pedestre	
-				if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE)
-					continue;//caso a posição ja estiver ocupada, ou for uma parede, passamos pra frente
+				if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE || piso.mat[a+c][b+d] == 0.0)				//fogo
+					continue;//caso a posição ja estiver ocupada, ou for uma parede, ou se estiver vazia, passamos pra frente
 				else if(fogo.mat[a+c][b+d] == VALOR_FOGO)										//fogo
 					continue;//caso houver um foco de incêndio na célula 								//fogo
 				else
@@ -160,8 +160,8 @@ void storage_cell(float **vet, int a, int b, int qtd_fogo, int qtd_vazio){//fun�
 	}else{//caso existir 5 ou menos céulas vazias ou com fogo na vizinhança										//fogo
 		for(int c=-1; c<2; c++){
 			for(int d=-1; d<2; d++){//juntos percorrem a vizinhança do pedestre	
-		 		if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE)
-					continue;//caso a posição ja estiver ocupada, ou for uma parede, passamos pra frente
+		 		if(sala.mat[a+c][b+d] >= 2 || piso.mat[a+c][b+d] == PAREDE || piso.mat[a+c][b+d] == 0.0)				//fogo
+					continue;//caso a posição ja estiver ocupada, ou for uma parede, ou se estiver vazia, passamos pra frente
 				else if(fogo.mat[a+c][b+d] == VALOR_FOGO)										//fogo
 					continue;//caso houver um foco de incêndio na célula 								//fogo
 				else{

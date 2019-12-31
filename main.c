@@ -19,7 +19,7 @@ int main(){
 		alocar_tudo();	//função para alocar todas as matrizes
 			
 		semente = 0;	//inicializa a variavel usada para gerar os numeros pseudo-aleatorios
-		for(int simu=0; simu<1000; simu++){	//simu define a qtd de simulações a serem feitas, que por padrão é 100
+		for(int simu=0; simu<10; simu++){	//simu define a qtd de simulações a serem feitas, que por padrão é 100
 //- - - - - - - - - - - - - - - - - - - - - - - - - Campo de Piso - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//	
 			int passos = 0;//variável que indica a qtd de passos necessários para todos os pedestres saírem da sala
 			
@@ -62,9 +62,10 @@ int main(){
 			}while(cont() > 0);//rodará enquanto a qtd de pedestres for maior que 0
 			
 			semente++;//incrementa a variavel usado para gerar os numeros pseudo-aleatorios
-			printf("%d\n",passos);//imprime a quantidade de passos necessários para todos os pedestres saírem da sala
+			printf("%d ",passos);//imprime a quantidade de passos necessários para todos os pedestres saírem da sala
 		}
 		desaloca();//desaloca as matrizes
+		printf("\t%d %d\n",local_port[0],local_port[1]);
 	}
 	return 0;
 }
