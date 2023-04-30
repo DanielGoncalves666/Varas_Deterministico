@@ -18,13 +18,6 @@ Descrição: Arquivo de cabeçaho reponsável pela definição de constantes, va
 #define PAREDE 500				//define os valores para as paredes
 #define VALOR_PORTA 1				//define o valor a ser atribuído para a célula de uma porta
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - Variáveis e Vetores Globais - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
-int lin, col;	//qtd de linhas, qtd de colunas
-int local_port[QTD_PORTAS*2];	//cria-se um vetor que armazena a linha e a coluna, respectivamente, para cada porta
-int semente;	//variavel para armazenar o valor que sera usado pela rand(), para gerar numeros pseudo aleatorios
-//int panico;	//vatiavel par auxiliar na geração de numeros aleatorios na função de panico
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Estruturas de Dados - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
 typedef struct{				//estrutura de dados padrão para os pedestres
@@ -32,23 +25,31 @@ typedef struct{				//estrutura de dados padrão para os pedestres
 	int linha_atual, coluna_atual;	//posição atual do pedestre em linha e coluna, respectivamente
 	int linha_mover, coluna_mover;	//posição ao qual o pedestre irá se mover, em linha e coluna, respectivamente
 }Pessoas;
-Pessoas Pedestre[PEDESTRES];	//estrutura para a quantidade PEDESTRES de indivíduos
 
 typedef struct{
 	int **mat;
 }mat_int;
-mat_int sala;			//estrutura para a sala, onde os pedestres serao alocados
 
 typedef struct{
 	float **mat;
 }mat_float;
-mat_float campo_piso[QTD_PORTAS];	//estrutura para o campo de piso.
-mat_float piso;				//estrutura para o piso final, obtido a partir das matrizes do campo_piso
 
 typedef struct node{//estrutrura do tipo fila
 	int num;
 	struct node *prox;
 }node;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - Variáveis e Vetores Globais - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+extern int lin, col;	//qtd de linhas, qtd de colunas
+extern int local_port[QTD_PORTAS*2];	//cria-se um vetor que armazena a linha e a coluna, respectivamente, para cada porta
+extern int semente;	//variavel para armazenar o valor que sera usado pela rand(), para gerar numeros pseudo aleatorios
+//int panico;	//variavel par auxiliar na geração de numeros aleatorios na função de panico
+
+extern Pessoas Pedestre[PEDESTRES];	//estrutura para a quantidade PEDESTRES de indivíduos
+extern mat_int sala;			//estrutura para a sala, onde os pedestres serao alocados
+extern mat_float campo_piso[QTD_PORTAS];	//estrutura para o campo de piso.
+extern mat_float piso;				//estrutura para o piso final, obtido a partir das matrizes do campo_piso
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - Prototipos das Funções - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
@@ -57,6 +58,7 @@ extern void ler_inicio();	//função para ler as entradas necessárias (lin, col
 extern void imprimir_piso(mat_float *M);//função para imprimir uma camada de campo de piso
 extern void imprimir_sala(mat_int *M);//função para imprimir uma matriz de inteiros, mais especificamente a nossa sala
 extern void imprimir_sala_pedestres(mat_int *M, mat_float *N);//função para imprimir a sala com os pedestres de uma maneira visualmente amiga
+extern void imprimirSalaCompacta(mat_int *M, mat_float *N);
 
 //piso.c
 extern void inicializar_campo_piso();//função para inicializar a matriz campo_piso
